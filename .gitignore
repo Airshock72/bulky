@@ -53,6 +53,7 @@ tsconfig.node.tsbuildinfo
 # Environment & Secrets
 # ========================
 .env
+.env.*
 .env.local
 .env.*.local
 
