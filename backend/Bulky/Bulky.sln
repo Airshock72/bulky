@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkyWeb", "BulkyWeb\BulkyWeb.csproj", "{CA874397-ED84-427B-AE9E-34D478A660A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulky.Web", "Bulky.Web\Bulky.Web.csproj", "{CA874397-ED84-427B-AE9E-34D478A660A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulky.Domain", "Bulky.Domain\Bulky.Domain.csproj", "{4294D202-35AD-46B6-9D47-E94BACDAE8A0}"
 EndProject
