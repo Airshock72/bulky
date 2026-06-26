@@ -18,4 +18,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Bulky.Domain\Bulky.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
