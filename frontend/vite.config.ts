@@ -51,7 +51,13 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5053',
+        changeOrigin: true
+      }
+    }
   },
   build: {
     sourcemap: mode !== 'production',
