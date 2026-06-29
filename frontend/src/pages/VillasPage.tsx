@@ -23,7 +23,7 @@ interface Villa {
   updatedDate: string
 }
 
-export default function VillasPage() {
+const VillasPage = () => {
   const [villas, setVillas] = useState<Array<Villa>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -76,7 +76,7 @@ export default function VillasPage() {
           </div>
           <Table>
             <TableHeader>
-              <TableRow className='hover:bg-transparent border-0'>
+              <TableRow className='border-0 hover:bg-transparent'>
                 <TableHead className='pl-6'>Name</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Sqft</TableHead>
@@ -88,19 +88,19 @@ export default function VillasPage() {
                 <TableRow>
                   <TableCell
                     colSpan={4}
-                    className='h-24 pl-6 text-center text-muted-foreground'
+                    className='h-24 text-center text-muted-foreground'
                   >
                     No villas found.
                   </TableCell>
                 </TableRow>
               ) : (
                 villas.map(villa => (
-                    <TableRow key={villa.id}>
-                      <TableCell className='pl-6 font-medium'>{villa.name}</TableCell>
-                      <TableCell>${(villa.price ?? 0).toLocaleString()}/night</TableCell>
-                      <TableCell>{(villa.sqft ?? 0).toLocaleString()}</TableCell>
-                      <TableCell className='pr-6'>{villa.occupancy} guests</TableCell>
-                    </TableRow>
+                  <TableRow key={villa.id}>
+                    <TableCell className='pl-6 font-medium'>{villa.name}</TableCell>
+                    <TableCell>${(villa.price ?? 0).toLocaleString()}/night</TableCell>
+                    <TableCell>{(villa.sqft ?? 0).toLocaleString()} sqft</TableCell>
+                    <TableCell className='pr-6'>{villa.occupancy} guests</TableCell>
+                  </TableRow>
                 ))
               )}
             </TableBody>
@@ -110,3 +110,5 @@ export default function VillasPage() {
     </section>
   )
 }
+
+export default VillasPage
