@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -60,10 +62,18 @@ export default function VillasPage() {
   return (
     <section className='mx-auto max-w-4xl px-6 py-12 animate-fade-in-up'>
       <Card className='overflow-hidden shadow-lg hover:shadow-xl'>
-        <CardHeader className='border-b border-border/60 bg-muted/30 px-6 py-5'>
-          <CardTitle className='text-xl font-semibold tracking-tight'>Villas</CardTitle>
+        <CardHeader className='border-b border-border/60 bg-linear-to-b from-emerald-900 to-emerald-700 px-6 py-8'>
+          <CardTitle className='text-center text-2xl font-semibold tracking-tight text-white drop-shadow-sm'>
+            Villas
+          </CardTitle>
         </CardHeader>
         <CardContent className='p-0'>
+          <div className='flex items-center justify-end border-b border-border/50 px-6 py-3'>
+            <Button variant='emerald' size='sm'>
+              <Plus className='h-4 w-4' />
+              Create New Villa
+            </Button>
+          </div>
           <Table>
             <TableHeader>
               <TableRow className='hover:bg-transparent border-0'>
