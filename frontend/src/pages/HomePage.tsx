@@ -1,7 +1,7 @@
 export default function HomePage() {
   return (
-    <main className='flex min-h-screen items-center justify-center'>
-      <h1 className='text-2xl font-bold'>Welcome</h1>
-    </main>
+    <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center animate-fade-in'>
+      <h1 className='text-2xl font-bold tracking-tight'>Welcome</h1>
+    </div>
   )
 }

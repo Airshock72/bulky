@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 interface Villa {
   id: number
   name: string
-  details: string
-  rate: number
+  description: string
+  price: number
   sqft: number
   occupancy: number
   imageUrl: string
-  amenity: string
   createdDate: string
   updatedDate: string
 }
@@ -29,19 +37,66 @@ export default function VillasPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <p>Loading villas...</p>
-  if (error) return <p>Error: {error}</p>
+  if (loading) {
+    return (
+      <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center'>
+        <div className='h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent' />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center px-6'>
+        <Card className='w-full max-w-md text-center shadow-lg'>
+          <CardContent className='py-10'>
+            <p className='text-sm text-destructive'>{error}</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
-    <div>
-      <h1>Villas</h1>
-      <ul>
-        {villas.map(villa => (
-          <li key={villa.id}>
-            <strong>{villa.name}</strong> — ${villa.rate}/night
-          </li>
-        ))}
-      </ul>
-    </div>
+    <section className='mx-auto max-w-4xl px-6 py-12 animate-fade-in-up'>
+      <Card className='overflow-hidden shadow-lg hover:shadow-xl'>
+        <CardHeader className='border-b border-border/60 bg-muted/30 px-6 py-5'>
+          <CardTitle className='text-xl font-semibold tracking-tight'>Villas</CardTitle>
+        </CardHeader>
+        <CardContent className='p-0'>
+          <Table>
+            <TableHeader>
+              <TableRow className='hover:bg-transparent border-0'>
+                <TableHead className='pl-6'>Name</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Sqft</TableHead>
+                <TableHead className='pr-6'>Occupancy</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {villas.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className='h-24 pl-6 text-center text-muted-foreground'
+                  >
+                    No villas found.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                villas.map(villa => (
+                    <TableRow key={villa.id}>
+                      <TableCell className='pl-6 font-medium'>{villa.name}</TableCell>
+                      <TableCell>${(villa.price ?? 0).toLocaleString()}/night</TableCell>
+                      <TableCell>{(villa.sqft ?? 0).toLocaleString()}</TableCell>
+                      <TableCell className='pr-6'>{villa.occupancy} guests</TableCell>
+                    </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </section>
   )
 }
