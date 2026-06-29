@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Plus } from 'lucide-react'
+import { ROUTES } from '@/routes/routes'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -24,6 +26,7 @@ interface Villa {
 }
 
 const VillasPage = () => {
+  const navigate = useNavigate()
   const [villas, setVillas] = useState<Array<Villa>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -69,7 +72,7 @@ const VillasPage = () => {
         </CardHeader>
         <CardContent className='p-0'>
           <div className='flex items-center justify-end border-b border-border/50 px-6 py-3'>
-            <Button variant='emerald' size='sm'>
+            <Button variant='emerald' size='sm' onClick={() => navigate(ROUTES.VILLAS_CREATE)}>
               <Plus className='h-4 w-4' />
               Create New Villa
             </Button>

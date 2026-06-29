@@ -13,14 +13,17 @@
     "check-all": "npx eslint ./src && npx tsc -b --pretty false --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.80.0",
     "react-idle-timer": "latest",
     "react-router-dom": "latest",
-    "tailwind-merge": "latest"
+    "tailwind-merge": "latest",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9",
