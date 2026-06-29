@@ -6,15 +6,20 @@ namespace BulkyWeb.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class VillaController : ControllerBase
+public class VillaController(ApplicationDbContext db) : ControllerBase
 {
-    private readonly ApplicationDbContext _db;
-    public VillaController(ApplicationDbContext db) { _db = db; }
-
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<Villa> villas = _db.Villas.ToList();
+        List<Villa> villas = db.Villas.ToList();
         return Ok(villas);
+    }
+
+    [HttpPost]
+    public IActionResult Create(Villa obj)
+    {
+        db.Villas.Add(obj);
+        db.SaveChanges();
+        return Ok(obj.Id);
     }
 }
