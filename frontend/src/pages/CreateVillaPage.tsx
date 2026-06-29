@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
+import { createVilla } from '@/api/villas'
 import { villaSchema, type VillaFormInput, type VillaFormData } from '@/schemas/villa'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -25,26 +26,7 @@ const CreateVillaPage = () => {
 
   const onSubmit = async (data: VillaFormData) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/villa/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-
-      if (!res.ok) {
-        let message = `Request failed: HTTP ${res.status}`
-        try {
-          const body = await res.json()
-          if (typeof body?.message === 'string') message = body.message
-          else if (typeof body?.error === 'string') message = body.error
-          else if (typeof body === 'string') message = body
-        } catch {
-          console.error('Failed to parse JSON response')
-        }
-        toast.error(message)
-        return
-      }
-
+      await createVilla(data)
       toast.success('Villa created successfully!')
       navigate(ROUTES.VILLAS)
     } catch (err) {

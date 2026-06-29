@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus } from 'lucide-react'
 import { ROUTES } from '@/routes/routes'
+import { getVillas } from '@/api/villas'
+import type { Villa } from '@/api/villas'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -13,18 +15,6 @@ import {
   TableRow
 } from '@/components/ui/table'
 
-interface Villa {
-  id: number
-  name: string
-  description: string
-  price: number
-  sqft: number
-  occupancy: number
-  imageUrl: string
-  createdDate: string
-  updatedDate: string
-}
-
 const VillasPage = () => {
   const navigate = useNavigate()
   const [villas, setVillas] = useState<Villa[]>([])
@@ -32,13 +22,9 @@ const VillasPage = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/villa`)
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        return res.json() as Promise<Villa[]>
-      })
+    getVillas()
       .then(data => setVillas(data))
-      .catch(err => setError(String(err)))
+      .catch(err => setError(err instanceof Error ? err.message : String(err)))
       .finally(() => setLoading(false))
   }, [])
 
