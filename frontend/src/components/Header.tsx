@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import ThemeToggle from '@/components/ThemeToggle'
 
 const NAV_LINKS = [
-  { label: 'Villas', to: ROUTES.VILLAS },
+  { label: 'Villas', to: ROUTES.VILLAS }
 ] as const
 
 const Header = () => (

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
 import { villaSchema, type VillaFormInput, type VillaFormData } from '@/schemas/villa'
 import { Button } from '@/components/ui/button'
@@ -19,28 +20,35 @@ const CreateVillaPage = () => {
   const {
     register,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm<VillaFormInput, unknown, VillaFormData>({ resolver })
 
   const onSubmit = async (data: VillaFormData) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/villa`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/villa/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       })
 
       if (!res.ok) {
-        setError('root', { message: `Request failed: HTTP ${res.status}` })
+        let message = `Request failed: HTTP ${res.status}`
+        try {
+          const body = await res.json()
+          if (typeof body?.message === 'string') message = body.message
+          else if (typeof body?.error === 'string') message = body.error
+          else if (typeof body === 'string') message = body
+        } catch {
+          console.error('Failed to parse JSON response')
+        }
+        toast.error(message)
         return
       }
 
+      toast.success('Villa created successfully!')
       navigate(ROUTES.VILLAS)
     } catch (err) {
-      setError('root', {
-        message: err instanceof Error ? err.message : 'An unexpected error occurred',
-      })
+      toast.error(err instanceof Error ? err.message : 'An unexpected error occurred')
     }
   }
 
@@ -134,12 +142,6 @@ const CreateVillaPage = () => {
               />
               <FieldError message={errors.imageUrl?.message} />
             </div>
-
-            {errors.root && (
-              <p className='rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive animate-fade-in'>
-                {errors.root.message}
-              </p>
-            )}
 
             <div className='flex items-center justify-end gap-3 pt-2'>
               <Button

@@ -26,7 +26,7 @@ export const villaSchema = z.object({
   price: positiveNumber(),
   sqft: positiveNumber(),
   occupancy: positiveNumber(true),
-  imageUrl: z.union([z.literal(''), z.string().url('Must be a valid URL')]),
+  imageUrl: z.union([z.literal(''), z.string().url('Must be a valid URL')])
 })
 
 export type VillaFormInput = z.input<typeof villaSchema>

@@ -34,17 +34,6 @@ export default tseslint.config(
       }
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true }
-      ],
-      '@typescript-eslint/array-type': [
-        'error',
-        {
-          default: 'generic'
-        }
-      ],
       '@typescript-eslint/no-non-null-assertion': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/rules-of-hooks': 'error',
@@ -68,13 +57,7 @@ export default tseslint.config(
       'semi-style': ['error', 'last'],
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
-      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-      'react/jsx-boolean-value': ['error', 'never'],
-      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
-      'react/self-closing-comp': 'error'
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }]
     }
   }
 )

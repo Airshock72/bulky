@@ -22,6 +22,7 @@
     "react-hook-form": "^7.80.0",
     "react-idle-timer": "latest",
     "react-router-dom": "latest",
+    "sonner": "^2.0.7",
     "tailwind-merge": "latest",
     "zod": "^4.4.3"
   },

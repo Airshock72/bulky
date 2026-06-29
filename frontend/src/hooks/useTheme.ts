@@ -9,7 +9,7 @@ const resolveTheme = (): Theme => {
     const stored = localStorage.getItem(THEME_STORAGE_KEY)
     if (stored === 'light' || stored === 'dark') return stored
   } catch {
-    console.error(`Failed to read theme from localStorage`)
+    console.error('Failed to read theme from localStorage')
   }
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }

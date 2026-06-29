@@ -10,7 +10,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from '@/components/ui/table'
 
 interface Villa {
@@ -27,7 +27,7 @@ interface Villa {
 
 const VillasPage = () => {
   const navigate = useNavigate()
-  const [villas, setVillas] = useState<Array<Villa>>([])
+  const [villas, setVillas] = useState<Villa[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -35,7 +35,7 @@ const VillasPage = () => {
     fetch(`${import.meta.env.VITE_API_BASE_URL}/villa`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        return res.json() as Promise<Array<Villa>>
+        return res.json() as Promise<Villa[]>
       })
       .then(data => setVillas(data))
       .catch(err => setError(String(err)))
