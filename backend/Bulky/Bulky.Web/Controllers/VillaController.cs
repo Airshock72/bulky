@@ -19,7 +19,7 @@ public class VillaController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(Villa obj)
+    public IActionResult Create([FromBody]Villa obj)
     {
         obj.CreatedDate = DateTime.UtcNow;
         _db.Villas.Add(obj);
@@ -44,5 +44,17 @@ public class VillaController : ControllerBase
 
         _db.SaveChanges();
         return Ok(villa);
+    }
+
+    [HttpDelete("{villaId:int}")]
+    public IActionResult Delete(int villaId)
+    {
+        Villa? villa = _db.Villas.FirstOrDefault(v => v.Id == villaId);
+
+        if (villa == null) return NotFound();
+
+        _db.Villas.Remove(villa);
+        _db.SaveChanges();
+        return Ok();
     }
 }
