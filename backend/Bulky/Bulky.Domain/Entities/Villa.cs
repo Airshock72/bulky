@@ -5,15 +5,13 @@ namespace Bulky.Domain.Entities;
 public class Villa
 {
     public int Id { get; set; }
-    [MaxLength(100)]
+    [MaxLength(50)]
     public required string Name { get; set; }
-    [MaxLength(250)]
     public string? Description { get; set; }
-    [Range(10, 10000)]
+    [Range(0, 10000)]
     public double Price { get; set; }
-    [Range(10, 10000)]
     public int Sqft { get; set; }
-    [Range(1, 100)]
+    [Range(0, 10)]
     public int Occupancy { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime? CreatedDate { get; set; }
