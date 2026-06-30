@@ -37,3 +37,10 @@ export const apiPut = async <TBody, TResponse = void>(path: string, body: TBody)
   const text = await res.text()
   return (text ? JSON.parse(text) : undefined) as TResponse
 }
+
+export const apiDelete = async (path: string): Promise<void> => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}${path}`, {
+    method: 'DELETE'
+  })
+  if (!res.ok) throw new Error(await parseErrorMessage(res))
+}
