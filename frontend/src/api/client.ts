@@ -26,3 +26,14 @@ export const apiPost = async <TBody, TResponse = void>(path: string, body: TBody
   const text = await res.text()
   return (text ? JSON.parse(text) : undefined) as TResponse
 }
+
+export const apiPut = async <TBody, TResponse = void>(path: string, body: TBody): Promise<TResponse> => {
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}${path}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  if (!res.ok) throw new Error(await parseErrorMessage(res))
+  const text = await res.text()
+  return (text ? JSON.parse(text) : undefined) as TResponse
+}

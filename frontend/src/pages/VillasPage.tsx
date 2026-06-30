@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
-import { ROUTES } from '@/routes/routes'
+import { ROUTES, buildVillaUpdateRoute } from '@/routes/routes'
 import { getVillas } from '@/api/villas'
 import type { Villa } from '@/api/villas'
 import { Button } from '@/components/ui/button'
@@ -95,7 +95,11 @@ const VillasPage = () => {
                       <div className='flex items-center justify-end gap-2'>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button variant='emerald' size='sm'>
+                            <Button
+                              variant='emerald'
+                              size='sm'
+                              onClick={() => navigate(buildVillaUpdateRoute(villa.id), { state: villa })}
+                            >
                               <Pencil className='h-4 w-4' />
                               Edit
                             </Button>

@@ -8,7 +8,7 @@ const NAV_LINKS = [
 ] as const
 
 const Header = () => (
-  <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/60'>
+  <header className='sticky top-0 z-50 w-full border-b border-slate-200/70 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md supports-backdrop-filter:bg-white/65 dark:supports-backdrop-filter:bg-slate-950/65'>
     <div className='mx-auto flex h-16 max-w-7xl items-center gap-8 px-6'>
       <Link
         to={ROUTES.HOME}

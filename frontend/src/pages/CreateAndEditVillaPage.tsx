@@ -1,11 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
-import { createVilla } from '@/api/villas'
+import { createVilla, updateVilla } from '@/api/villas'
+import type { Villa } from '@/api/villas'
 import { villaSchema, type VillaFormInput, type VillaFormData } from '@/schemas/villa'
+import NotFoundPage from '@/pages/NotFoundPage'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FieldError } from '@/components/ui/field-error'
@@ -15,31 +17,54 @@ import { Textarea } from '@/components/ui/textarea'
 
 const resolver = zodResolver(villaSchema) as unknown as Resolver<VillaFormInput, unknown, VillaFormData>
 
-const CreateVillaPage = () => {
+const CreateAndEditVillaPage = () => {
   const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
+  const { state } = useLocation()
+  const villa = state as Villa | undefined
+  const isEditMode = !!id
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<VillaFormInput, unknown, VillaFormData>({ resolver })
+  } = useForm<VillaFormInput, unknown, VillaFormData>({
+    resolver,
+    ...(villa ? {
+      defaultValues: {
+        name: villa.name ?? '',
+        description: villa.description ?? '',
+        price: villa.price != null ? String(villa.price) : '',
+        sqft: villa.sqft != null ? String(villa.sqft) : '',
+        occupancy: villa.occupancy != null ? String(villa.occupancy) : '',
+        imageUrl: villa.imageUrl ?? ''
+      }
+    } : {})
+  })
 
   const onSubmit = async (data: VillaFormData) => {
     try {
-      await createVilla(data)
-      toast.success('Villa created successfully!')
+      if (isEditMode) {
+        await updateVilla(Number(id), data)
+        toast.success('Villa updated successfully!')
+      } else {
+        await createVilla(data)
+        toast.success('Villa created successfully!')
+      }
       navigate(ROUTES.VILLAS)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'An unexpected error occurred')
     }
   }
 
+  if (isEditMode && !villa) return <NotFoundPage />
+
   return (
     <section className='mx-auto max-w-3xl px-6 py-12 animate-fade-in-up'>
       <Card className='overflow-hidden shadow-lg'>
         <CardHeader className='border-b border-border/60 bg-linear-to-b from-emerald-900 to-emerald-700 px-6 py-8'>
           <CardTitle className='text-center text-2xl font-semibold tracking-tight text-white drop-shadow-sm'>
-            Create Villa
+            {isEditMode ? 'Update Villa' : 'Create Villa'}
           </CardTitle>
         </CardHeader>
 
@@ -135,7 +160,10 @@ const CreateVillaPage = () => {
               </Button>
               <Button type='submit' variant='emerald' disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className='h-4 w-4 animate-spin' />}
-                {isSubmitting ? 'Creating…' : 'Create'}
+                {isSubmitting
+                  ? (isEditMode ? 'Updating…' : 'Creating…')
+                  : (isEditMode ? 'Update' : 'Create')
+                }
               </Button>
             </div>
 
@@ -146,4 +174,4 @@ const CreateVillaPage = () => {
   )
 }
 
-export default CreateVillaPage
+export default CreateAndEditVillaPage
