@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { ROUTES } from '@/routes/routes'
 import { cn } from '@/lib/utils'
 import ThemeToggle from '@/components/ThemeToggle'
+import BulkyWebLogo from '@/assets/images/BulkyWebLogo'
 
 const NAV_LINKS = [
   { label: 'Villas', to: ROUTES.VILLAS }
@@ -12,9 +13,10 @@ const Header = () => (
     <div className='mx-auto flex h-16 max-w-7xl items-center gap-8 px-6'>
       <Link
         to={ROUTES.HOME}
-        className='rounded-sm text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+        className='flex items-center gap-2 rounded-sm transition-opacity duration-200 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
       >
-        BulkyWeb
+        <BulkyWebLogo />
+        <span className='text-xl font-bold tracking-tight text-foreground'>BulkyWeb</span>
       </Link>
 
       <nav className='flex items-center gap-6'>
