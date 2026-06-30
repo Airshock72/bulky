@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     }
     
     public DbSet<Villa> Villas { get; set; }
+    public DbSet<VillaNumber> VillaNumbers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,6 +46,30 @@ public class ApplicationDbContext : DbContext
                 Occupancy = 4,
                 Price = 400,
                 Sqft = 750
+            }
+        );
+        
+        modelBuilder.Entity<VillaNumber>().HasData(
+            new VillaNumber
+            {
+                Id = 1,
+                Number = 101,
+                VillaId = 2,
+                SpecialDetails = "This is a special detail for Villa Number 101"
+            },
+            new VillaNumber
+            {
+                Id = 2,
+                Number = 102,
+                VillaId = 2,
+                SpecialDetails = "This is a special detail for Villa Number 102"
+            },
+            new VillaNumber
+            {
+                Id = 3,
+                Number = 201,
+                VillaId = 2,
+                SpecialDetails = "This is a special detail for Villa Number 201"
             }
         );
     }
