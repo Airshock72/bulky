@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+const emptyToUndefined = (val: string) => val === '' ? undefined : val
+
 const positiveNumber = (integer = false) =>
   z
     .string()
@@ -22,11 +24,15 @@ export const villaSchema = z.object({
     .max(100, 'Name must be 100 characters or fewer'),
   description: z
     .string()
-    .max(500, 'Description must be 500 characters or fewer'),
+    .transform(emptyToUndefined)
+    .pipe(z.string().max(500, 'Description must be 500 characters or fewer').optional()),
   price: positiveNumber(),
   sqft: positiveNumber(),
   occupancy: positiveNumber(true),
-  imageUrl: z.union([z.literal(''), z.string().url('Must be a valid URL')])
+  imageUrl: z
+    .string()
+    .transform(emptyToUndefined)
+    .pipe(z.url({ message: 'Must be a valid URL' }).optional())
 })
 
 export type VillaFormInput = z.input<typeof villaSchema>

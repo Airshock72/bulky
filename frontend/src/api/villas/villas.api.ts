@@ -6,4 +6,4 @@ export const getVillas = (): Promise<Villa[]> =>
   apiGet<Villa[]>('/villa')
 
 export const createVilla = (data: VillaFormData): Promise<void> =>
-  apiPost<VillaFormData>('/villa/create', data)
+  apiPost<VillaFormData>('/villa', data)
