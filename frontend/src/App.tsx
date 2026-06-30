@@ -6,9 +6,10 @@ import NotFoundPage from '@/pages/NotFoundPage'
 import VillasPage from '@/pages/VillasPage'
 import CreateVillaPage from '@/pages/CreateVillaPage'
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const App = () => (
-  <>
+  <TooltipProvider>
     <Toaster richColors position='top-right' />
     <Layout>
       <Routes>
@@ -18,7 +19,7 @@ const App = () => (
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </Layout>
-  </>
+  </TooltipProvider>
 )
 
 export default App

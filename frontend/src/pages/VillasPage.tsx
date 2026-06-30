@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { ROUTES } from '@/routes/routes'
 import { getVillas } from '@/api/villas'
 import type { Villa } from '@/api/villas'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Table,
   TableBody,
@@ -69,14 +70,15 @@ const VillasPage = () => {
                 <TableHead className='pl-6'>Name</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Sqft</TableHead>
-                <TableHead className='pr-6'>Occupancy</TableHead>
+                <TableHead>Occupancy</TableHead>
+                <TableHead className='pr-6 text-right'>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {villas.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={4}
+                    colSpan={5}
                     className='h-24 text-center text-muted-foreground'
                   >
                     No villas found.
@@ -88,7 +90,29 @@ const VillasPage = () => {
                     <TableCell className='pl-6 font-medium'>{villa.name}</TableCell>
                     <TableCell>${(villa.price ?? 0).toLocaleString()}/night</TableCell>
                     <TableCell>{(villa.sqft ?? 0).toLocaleString()} sqft</TableCell>
-                    <TableCell className='pr-6'>{villa.occupancy} guests</TableCell>
+                    <TableCell>{villa.occupancy} guests</TableCell>
+                    <TableCell className='pr-6'>
+                      <div className='flex items-center justify-end gap-2'>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant='emerald' size='sm'>
+                              <Pencil className='h-4 w-4' />
+                              Edit
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Edit</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant='destructive' size='sm'>
+                              <Trash2 className='h-4 w-4' />
+                              Delete
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Delete</TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))
               )}
