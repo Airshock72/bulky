@@ -21,8 +21,28 @@ public class VillaController : ControllerBase
     [HttpPost]
     public IActionResult Create(Villa obj)
     {
+        obj.CreatedDate = DateTime.UtcNow;
         _db.Villas.Add(obj);
         _db.SaveChanges();
         return Ok(obj.Id);
+    }
+
+    [HttpPut("{villaId:int}")]
+    public IActionResult Update(int villaId, [FromBody] Villa updatedVilla)
+    {
+        Villa? villa = _db.Villas.FirstOrDefault(v => v.Id == villaId);
+
+        if (villa == null) return NotFound();
+
+        villa.Name = updatedVilla.Name;
+        villa.Description = updatedVilla.Description;
+        villa.ImageUrl = updatedVilla.ImageUrl;
+        villa.Occupancy = updatedVilla.Occupancy;
+        villa.Price = updatedVilla.Price;
+        villa.Sqft = updatedVilla.Sqft;
+        villa.UpdatedDate = DateTime.UtcNow;
+
+        _db.SaveChanges();
+        return Ok(villa);
     }
 }
