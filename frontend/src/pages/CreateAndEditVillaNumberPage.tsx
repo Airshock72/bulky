@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
-import { getVillas } from '@/api/villas'
-import type { Villa } from '@/api/villas'
+import { getVillasList } from '@/api/villas'
+import type { VillaListItem } from '@/api/villas'
 import { createVillaNumber, updateVillaNumber } from '@/api/villa-numbers'
 import type { VillaNumber } from '@/api/villa-numbers'
 import { villaNumberSchema, type VillaNumberFormInput, type VillaNumberFormData } from '@/schemas/villaNumber'
@@ -28,10 +28,10 @@ const CreateAndEditVillaNumberPage = () => {
   const villaNumber = state as VillaNumber | undefined
   const isEditMode = !!id
 
-  const [villas, setVillas] = useState<Villa[]>([])
+  const [villas, setVillas] = useState<VillaListItem[]>([])
 
   useEffect(() => {
-    getVillas().then(setVillas).catch(() => console.error('Failed to fetch villas'))
+    getVillasList().then(setVillas).catch(() => console.error('Failed to fetch villas'))
   }, [])
 
   const {

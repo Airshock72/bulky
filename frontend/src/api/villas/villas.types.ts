@@ -9,3 +9,8 @@ export interface Villa {
   createdDate: string
   updatedDate: string
 }
+
+export interface VillaListItem {
+  id: number
+  name: string
+}

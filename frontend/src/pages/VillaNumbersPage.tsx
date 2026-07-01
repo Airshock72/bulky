@@ -56,7 +56,6 @@ const VillaNumbersPage = () => {
           <Table>
             <TableHeader>
               <TableRow className='border-0 hover:bg-transparent'>
-                <TableHead className='pl-6'>Villa Name</TableHead>
                 <TableHead>Villa Number</TableHead>
                 <TableHead>Special Details</TableHead>
                 <TableHead className='pr-6 text-right'>Actions</TableHead>
@@ -72,7 +71,6 @@ const VillaNumbersPage = () => {
               ) : (
                 paginatedVillaNumbers.map(vn => (
                   <TableRow key={vn.id}>
-                    <TableCell className='pl-6 font-medium'>{vn.villa.name}</TableCell>
                     <TableCell>{vn.number}</TableCell>
                     <TableCell className='max-w-xs truncate text-muted-foreground'>
                       {vn.specialDetails ?? '—'}

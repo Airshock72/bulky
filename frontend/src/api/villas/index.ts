@@ -1,2 +1,2 @@
-export type { Villa } from './villas.types'
-export { getVillas, createVilla, updateVilla, deleteVilla } from './villas.api'
+export type { Villa, VillaListItem } from './villas.types'
+export { getVillas, getVillasList, createVilla, updateVilla, deleteVilla } from './villas.api'

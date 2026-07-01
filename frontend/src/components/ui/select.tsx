@@ -1,6 +1,6 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
-import { forwardRef } from 'react'
+import {ComponentPropsWithoutRef, ComponentRef, forwardRef} from 'react'
 import { cn } from '@/lib/utils'
 
 const Select = SelectPrimitive.Root
@@ -8,8 +8,8 @@ const SelectValue = SelectPrimitive.Value
 const SelectGroup = SelectPrimitive.Group
 
 const SelectTrigger = forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+    ComponentRef<typeof SelectPrimitive.Trigger>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
@@ -27,15 +27,15 @@ const SelectTrigger = forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className='h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 [[data-state=open]_&]:rotate-180' />
+      <ChevronDown className='h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 in-data-[state=open]:rotate-180' />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectContent = forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+    ComponentRef<typeof SelectPrimitive.Content>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = 'popper', ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
@@ -43,9 +43,9 @@ const SelectContent = forwardRef<
       position={position}
       sideOffset={6}
       className={cn(
-        'relative z-50 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md',
+        'relative z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md',
         'data-[state=open]:animate-select-in data-[state=closed]:animate-select-out',
-        position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
+        position === 'popper' && 'w-(--radix-select-trigger-width)',
         className
       )}
       {...props}
@@ -59,8 +59,8 @@ const SelectContent = forwardRef<
 SelectContent.displayName = SelectPrimitive.Content.displayName
 
 const SelectItem = forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+    ComponentRef<typeof SelectPrimitive.Item>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
@@ -69,7 +69,7 @@ const SelectItem = forwardRef<
       'transition-colors duration-100',
       'hover:bg-accent hover:text-accent-foreground',
       'focus:bg-accent focus:text-accent-foreground',
-      'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'data-disabled:pointer-events-none data-disabled:opacity-50',
       className
     )}
     {...props}
