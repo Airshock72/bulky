@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useForm, type Resolver } from 'react-hook-form'
+import { useForm, Controller, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ChevronDown, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
 import { getVillas } from '@/api/villas'
@@ -17,7 +17,7 @@ import { FieldError } from '@/components/ui/field-error'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const resolver = zodResolver(villaNumberSchema) as unknown as Resolver<VillaNumberFormInput, unknown, VillaNumberFormData>
 
@@ -37,16 +37,17 @@ const CreateAndEditVillaNumberPage = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting }
   } = useForm<VillaNumberFormInput, unknown, VillaNumberFormData>({
     resolver,
-    ...(villaNumber ? {
-      defaultValues: {
-        villaId: String(villaNumber.villaId),
-        number: String(villaNumber.number),
-        specialDetails: villaNumber.specialDetails ?? ''
-      }
-    } : {})
+    defaultValues: villaNumber ? {
+      villaId: String(villaNumber.villaId),
+      number: String(villaNumber.number),
+      specialDetails: villaNumber.specialDetails ?? ''
+    } : {
+      villaId: ''
+    }
   })
 
   const onSubmit = async (data: VillaNumberFormData) => {
@@ -82,24 +83,27 @@ const CreateAndEditVillaNumberPage = () => {
               <Label htmlFor='villaId'>
                 Villa <span className='text-destructive'>*</span>
               </Label>
-              <div className='relative'>
-                <select
-                  id='villaId'
-                  className={cn(
-                    'flex h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 py-1 text-sm shadow-sm transition-colors',
-                    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-                    'disabled:cursor-not-allowed disabled:opacity-50'
-                  )}
-                  aria-invalid={!!errors.villaId}
-                  {...register('villaId')}
-                >
-                  <option value=''>Select a villa…</option>
-                  {villas.map(v => (
-                    <option key={v.id} value={String(v.id)}>{v.name}</option>
-                  ))}
-                </select>
-                <ChevronDown className='pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
-              </div>
+              <Controller
+                name='villaId'
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger id='villaId' aria-invalid={!!errors.villaId}>
+                      <SelectValue placeholder='Please select a villa' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {villas.map(v => (
+                        <SelectItem key={v.id} value={String(v.id)}>
+                          {v.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               <FieldError message={errors.villaId?.message} />
             </div>
 

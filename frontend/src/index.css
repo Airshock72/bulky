@@ -26,6 +26,8 @@
   /* Named animations — generates animate-* utility classes */
   --animate-fade-in-up: fade-in-up 0.45s ease-out both;
   --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-select-in: select-in 0.15s ease-out both;
+  --animate-select-out: select-out 0.1s ease-in both;
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -39,6 +41,28 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes select-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes select-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
   }
 }
 
