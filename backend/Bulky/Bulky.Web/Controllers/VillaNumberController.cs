@@ -1,6 +1,7 @@
 using Bulky.Domain.Entities;
 using Bulky.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulkyWeb.Controllers;
 
@@ -14,7 +15,7 @@ public class VillaNumberController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<VillaNumber> villaNumbers = _db.VillaNumbers.ToList();
+        List<VillaNumber> villaNumbers = _db.VillaNumbers.Include(v => v.Villa).ToList();
         return Ok(villaNumbers);
     }
 
