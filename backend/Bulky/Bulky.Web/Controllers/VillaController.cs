@@ -18,6 +18,13 @@ public class VillaController : ControllerBase
         return Ok(villas);
     }
 
+    [HttpGet("list")]
+    public IActionResult GetAllList()
+    {
+        var villas = _db.Villas.Select(v => new { v.Id, v.Name }).ToList();
+        return Ok(villas);
+    }
+
     [HttpPost]
     public IActionResult Create([FromBody]Villa obj)
     {

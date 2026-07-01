@@ -21,9 +21,6 @@ public class VillaNumberController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] VillaNumber obj)
     {
-        bool villaExist = _db.Villas.Any(v => v.Id == obj.VillaId);
-        if (!villaExist) return NotFound();
-        
         _db.VillaNumbers.Add(obj);
         _db.SaveChanges();
         return Ok(obj.Id);
