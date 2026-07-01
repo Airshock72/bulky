@@ -118,6 +118,7 @@ const CreateAndEditVillaNumberPage = () => {
                 step='1'
                 placeholder='e.g. 101'
                 aria-invalid={!!errors.number}
+                disabled={isEditMode}
                 {...register('number')}
               />
               <FieldError message={errors.number?.message} />

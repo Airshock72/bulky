@@ -22,6 +22,10 @@ public class VillaNumberController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] VillaNumber obj)
     {
+        bool villaNumberExist = _db.VillaNumbers.Any(vn => vn.Number == obj.Number);
+        
+        if (villaNumberExist) return BadRequest($"Villa Number {obj.Number} already exists!");
+        
         _db.VillaNumbers.Add(obj);
         _db.SaveChanges();
         return Ok(obj.Id);
@@ -33,7 +37,6 @@ public class VillaNumberController : ControllerBase
         VillaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(vn => vn.Id == villaNumberId);
         if (villaNumber == null) return NotFound();
         
-        villaNumber.Number = updatedVillaNumber.Number;
         villaNumber.SpecialDetails = updatedVillaNumber.SpecialDetails;
         villaNumber.VillaId = updatedVillaNumber.VillaId;
 

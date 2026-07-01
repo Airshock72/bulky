@@ -1,11 +1,14 @@
 const parseErrorMessage = async (res: Response): Promise<string> => {
-  try {
-    const body = await res.json()
-    if (typeof body?.message === 'string') return body.message
-    if (typeof body?.error === 'string') return body.error
-    if (typeof body === 'string') return body
-  } catch {
-    console.error('Failed to parse error message from response')
+  const text = await res.text()
+  if (text) {
+    try {
+      const body = JSON.parse(text)
+      if (typeof body?.message === 'string') return body.message
+      if (typeof body?.error === 'string') return body.error
+      if (typeof body === 'string') return body
+    } catch {
+      return text
+    }
   }
   return `Request failed: HTTP ${res.status}`
 }

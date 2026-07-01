@@ -8,6 +8,6 @@ public class VillaNumber
     public int Number { get; set; }
     [ForeignKey("Villa")]
     public int VillaId { get; set; }
-    public Villa Villa { get; set; }
+    public Villa? Villa { get; set; }
     public string? SpecialDetails { get; set; }
 }
