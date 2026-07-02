@@ -14,7 +14,7 @@ public class VillaController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<Villa> villas = _villaRepository.GetList();
+        IEnumerable<Villa> villas = _villaRepository.GetList();
         return Ok(villas);
     }
 
