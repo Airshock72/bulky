@@ -7,5 +7,6 @@ public interface IRepository<T> where T: class
     IEnumerable<T> GetList();
     T? Get(Expression<Func<T, bool>> filter);
     void Add(T entity);
+    bool Any(Expression<Func<T, bool>> filter);
     void Remove(T entity);
 }

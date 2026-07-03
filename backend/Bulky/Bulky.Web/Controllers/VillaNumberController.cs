@@ -21,7 +21,7 @@ public class VillaNumberController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] VillaNumber obj)
     {
-        bool villaNumberExist = _unitOfWork.VillaNumbers.NumberExist(obj.Number);
+        bool villaNumberExist = _unitOfWork.VillaNumbers.Any(v => v.Number == obj.Number);
         
         if (villaNumberExist) return BadRequest($"Villa Number {obj.Number} already exists!");
         

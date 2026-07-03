@@ -19,6 +19,11 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet.Add(entity);
     }
 
+    public bool Any(Expression<Func<T, bool>> filter)
+    {
+        return _dbSet.Any(filter);
+    }
+
     public void Remove(T entity)
     {
         _dbSet.Remove(entity);
