@@ -8,20 +8,20 @@ namespace BulkyWeb.Controllers;
 [Route("api/[controller]")]
 public class VillaController : ControllerBase
 {
-    private readonly IVillaRepository _villaRepository;
-    public VillaController(IVillaRepository villaRepository) { _villaRepository = villaRepository; }
+    private readonly IUnitOfWork _unitOfWork;
+    public VillaController(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
     
     [HttpGet]
     public IActionResult GetAll()
     {
-        IEnumerable<Villa> villas = _villaRepository.GetList();
+        IEnumerable<Villa> villas = _unitOfWork.Villa.GetList();
         return Ok(villas);
     }
 
     [HttpGet("list")]
     public IActionResult GetAllList()
     {
-        var villas = _villaRepository.GetListOptions();
+        var villas = _unitOfWork.Villa.GetListOptions();
         return Ok(villas);
     }
 
@@ -29,15 +29,15 @@ public class VillaController : ControllerBase
     public IActionResult Create([FromBody]Villa obj)
     {
         obj.CreatedDate = DateTime.UtcNow;
-        _villaRepository.Add(obj);
-        _villaRepository.Save();
+        _unitOfWork.Villa.Add(obj);
+        _unitOfWork.Villa.Save();
         return Ok(obj.Id);
     }
 
     [HttpPut("{villaId:int}")]
     public IActionResult Update(int villaId, [FromBody] Villa updatedVilla)
     {
-        Villa? villa = _villaRepository.Get(villaId);
+        Villa? villa = _unitOfWork.Villa.Get(villaId);
 
         if (villa == null) return NotFound();
 
@@ -49,19 +49,19 @@ public class VillaController : ControllerBase
         villa.Sqft = updatedVilla.Sqft;
         villa.UpdatedDate = DateTime.UtcNow;
 
-        _villaRepository.Save();
+        _unitOfWork.Villa.Save();
         return Ok(villa);
     }
 
     [HttpDelete("{villaId:int}")]
     public IActionResult Delete(int villaId)
     {
-        Villa? villa = _villaRepository.Get(villaId);
+        Villa? villa = _unitOfWork.Villa.Get(villaId);
 
         if (villa == null) return NotFound();
 
-        _villaRepository.Remove(villa);
-        _villaRepository.Save();
+        _unitOfWork.Villa.Remove(villa);
+        _unitOfWork.Villa.Save();
         return Ok();
     }
 }
