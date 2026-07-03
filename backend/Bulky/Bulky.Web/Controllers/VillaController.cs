@@ -30,7 +30,7 @@ public class VillaController : ControllerBase
     {
         obj.CreatedDate = DateTime.UtcNow;
         _unitOfWork.Villa.Add(obj);
-        _unitOfWork.Villa.Save();
+        _unitOfWork.Save();
         return Ok(obj.Id);
     }
 
@@ -49,7 +49,7 @@ public class VillaController : ControllerBase
         villa.Sqft = updatedVilla.Sqft;
         villa.UpdatedDate = DateTime.UtcNow;
 
-        _unitOfWork.Villa.Save();
+        _unitOfWork.Save();
         return Ok(villa);
     }
 
@@ -61,7 +61,7 @@ public class VillaController : ControllerBase
         if (villa == null) return NotFound();
 
         _unitOfWork.Villa.Remove(villa);
-        _unitOfWork.Villa.Save();
+        _unitOfWork.Save();
         return Ok();
     }
 }

@@ -1,0 +1,9 @@
+﻿using Bulky.Domain.Entities;
+
+namespace Bulky.Application.Common.Interfaces;
+
+public interface IVillaNumberRepository : IRepository<VillaNumber>
+{
+    IEnumerable<VillaNumber> GetAllWithVilla();
+    bool NumberExist(int number);
+}

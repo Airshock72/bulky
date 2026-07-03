@@ -7,10 +7,17 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _db;
     public IVillaRepository Villa { get; private set; }
+    public IVillaNumberRepository VillaNumbers { get; private set; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
         _db = db;
         Villa = new VillaRepository(_db);
+        VillaNumbers = new VillaNumberRepository(_db);
+    }
+
+    public void Save()
+    {
+        _db.SaveChanges();
     }
 }

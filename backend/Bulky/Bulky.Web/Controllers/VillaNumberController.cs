@@ -1,7 +1,6 @@
+using Bulky.Application.Common.Interfaces;
 using Bulky.Domain.Entities;
-using Bulky.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulkyWeb.Controllers;
 
@@ -9,50 +8,50 @@ namespace BulkyWeb.Controllers;
 [Route("api/[controller]")]
 public class VillaNumberController : ControllerBase
 {
-    private readonly ApplicationDbContext _db;
-    public VillaNumberController(ApplicationDbContext db) { _db = db; }
+    private readonly IUnitOfWork _unitOfWork;
+    public VillaNumberController(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<VillaNumber> villaNumbers = _db.VillaNumbers.Include(v => v.Villa).ToList();
+        IEnumerable<VillaNumber> villaNumbers = _unitOfWork.VillaNumbers.GetAllWithVilla();
         return Ok(villaNumbers);
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] VillaNumber obj)
     {
-        bool villaNumberExist = _db.VillaNumbers.Any(vn => vn.Number == obj.Number);
+        bool villaNumberExist = _unitOfWork.VillaNumbers.NumberExist(obj.Number);
         
         if (villaNumberExist) return BadRequest($"Villa Number {obj.Number} already exists!");
         
-        _db.VillaNumbers.Add(obj);
-        _db.SaveChanges();
+        _unitOfWork.VillaNumbers.Add(obj);
+        _unitOfWork.Save();
         return Ok(obj.Id);
     }
 
     [HttpPut("{villaNumberId:int}")]
     public IActionResult Update(int villaNumberId, [FromBody] VillaNumber updatedVillaNumber)
     {
-        VillaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(vn => vn.Id == villaNumberId);
+        VillaNumber? villaNumber = _unitOfWork.VillaNumbers.Get(v => v.Id == villaNumberId);
         if (villaNumber == null) return NotFound();
         
         villaNumber.SpecialDetails = updatedVillaNumber.SpecialDetails;
         villaNumber.VillaId = updatedVillaNumber.VillaId;
 
-        _db.SaveChanges();
+        _unitOfWork.Save();
         return Ok(villaNumber);
     }
 
     [HttpDelete("{villaNumberId:int}")]
     public IActionResult Delete(int villaNumberId)
     {
-        VillaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(vn => vn.Id == villaNumberId);
+        VillaNumber? villaNumber = _unitOfWork.VillaNumbers.Get(v => v.Id == villaNumberId);
 
         if (villaNumber == null) return NotFound();
 
-        _db.VillaNumbers.Remove(villaNumber);
-        _db.SaveChanges();
+        _unitOfWork.VillaNumbers.Remove(villaNumber);
+        _unitOfWork.Save();
         return Ok();
     }
 }

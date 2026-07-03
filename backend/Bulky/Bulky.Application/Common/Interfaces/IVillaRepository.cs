@@ -6,5 +6,4 @@ public interface IVillaRepository: IRepository<Villa>
 {
     IEnumerable<object> GetListOptions();
     Villa? Get(int id);
-    void Save();
 }
