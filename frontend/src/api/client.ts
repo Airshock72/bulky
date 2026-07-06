@@ -1,3 +1,9 @@
+export const toAbsoluteUrl = (path: string): string => {
+  if (!path || path.startsWith('http') || path.startsWith('data:')) return path
+  const origin = new URL(import.meta.env.VITE_API_BASE_URL as string).origin
+  return `${origin}${path}`
+}
+
 const parseErrorMessage = async (res: Response): Promise<string> => {
   const text = await res.text()
   if (text) {

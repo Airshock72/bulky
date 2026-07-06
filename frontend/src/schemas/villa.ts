@@ -29,10 +29,16 @@ export const villaSchema = z.object({
   price: positiveNumber(),
   sqft: positiveNumber(),
   occupancy: positiveNumber(true),
-  imageUrl: z
+  image: z
     .string()
-    .transform(emptyToUndefined)
-    .pipe(z.url({ message: 'Must be a valid URL' }).optional())
+    .optional()
+    .transform(val => (!val ? undefined : val))
+    .pipe(
+      z.union([
+        z.string().url({ message: 'Must be a valid image URL or uploaded file' }),
+        z.string().startsWith('data:image/', { message: 'Must be a valid image URL or uploaded file' })
+      ]).optional()
+    )
 })
 
 export type VillaFormInput = z.input<typeof villaSchema>

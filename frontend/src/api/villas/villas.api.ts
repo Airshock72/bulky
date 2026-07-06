@@ -5,6 +5,9 @@ import type { Villa, VillaListItem } from './villas.types'
 export const getVillas = (): Promise<Villa[]> =>
   apiGet<Villa[]>('/villa')
 
+export const getVilla = (id: number): Promise<Villa> =>
+  apiGet<Villa>(`/villa/${id}`)
+
 export const getVillasList = (): Promise<VillaListItem[]> =>
   apiGet<VillaListItem[]>('/villa/list')
 
