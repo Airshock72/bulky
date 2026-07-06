@@ -40,7 +40,7 @@ export const useVillasPage = () => {
   const handleCreateClick = () => navigate(ROUTES.VILLAS_CREATE)
 
   const handleEditClick = (villa: Villa) =>
-    navigate(buildVillaUpdateRoute(villa.id), { state: villa })
+    navigate(buildVillaUpdateRoute(villa.id))
 
   const handleDeleteClick = (villa: Villa) => setVillaToDelete(villa)
 

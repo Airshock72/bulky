@@ -1,16 +1,19 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useForm, type Resolver } from 'react-hook-form'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useForm, Controller, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
-import { createVilla, updateVilla } from '@/api/villas'
-import type { Villa } from '@/api/villas'
+import { getVilla, createVilla, updateVilla } from '@/api/villas'
+import { toAbsoluteUrl } from '@/api/client'
 import { villaSchema, type VillaFormInput, type VillaFormData } from '@/schemas/villa'
-import NotFoundPage from '@/pages/NotFoundPage'
+import PageLoader from '@/pages/PageLoader'
+import PageError from '@/pages/PageError'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FieldError } from '@/components/ui/field-error'
+import { ImageUpload } from '@/components/ui/image-upload'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -20,27 +23,35 @@ const resolver = zodResolver(villaSchema) as unknown as Resolver<VillaFormInput,
 const CreateAndEditVillaPage = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  const { state } = useLocation()
-  const villa = state as Villa | undefined
   const isEditMode = !!id
+
+  const [isFetching, setIsFetching] = useState(isEditMode)
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const {
     register,
+    control,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting }
-  } = useForm<VillaFormInput, unknown, VillaFormData>({
-    resolver,
-    ...(villa ? {
-      defaultValues: {
+  } = useForm<VillaFormInput, unknown, VillaFormData>({ resolver })
+
+  useEffect(() => {
+    if (!isEditMode) return
+    setIsFetching(true)
+    setFetchError(null)
+    getVilla(Number(id))
+      .then((villa) => reset({
         name: villa.name ?? '',
         description: villa.description ?? '',
-        price: villa.price != null ? String(villa.price) : '',
-        sqft: villa.sqft != null ? String(villa.sqft) : '',
-        occupancy: villa.occupancy != null ? String(villa.occupancy) : '',
-        imageUrl: villa.imageUrl ?? ''
-      }
-    } : {})
-  })
+        price: villa.price ? String(villa.price) : '',
+        sqft: villa.sqft ? String(villa.sqft) : '',
+        occupancy: villa.occupancy ? String(villa.occupancy) : '',
+        image: villa.imageUrl ? toAbsoluteUrl(villa.imageUrl) : ''
+      }))
+      .catch((err) => setFetchError(err instanceof Error ? err.message : 'Failed to load villa'))
+      .finally(() => setIsFetching(false))
+  }, [id, isEditMode, reset])
 
   const onSubmit = async (data: VillaFormData) => {
     try {
@@ -57,7 +68,8 @@ const CreateAndEditVillaPage = () => {
     }
   }
 
-  if (isEditMode && !villa) return <NotFoundPage />
+  if (isFetching) return <PageLoader />
+  if (fetchError) return <PageError message={fetchError} />
 
   return (
     <section className='mx-auto max-w-3xl px-6 py-12 animate-fade-in-up'>
@@ -139,15 +151,20 @@ const CreateAndEditVillaPage = () => {
             </div>
 
             <div className='space-y-1.5'>
-              <Label htmlFor='imageUrl'>Image URL</Label>
-              <Input
-                id='imageUrl'
-                type='url'
-                placeholder='https://example.com/image.jpg'
-                aria-invalid={!!errors.imageUrl}
-                {...register('imageUrl')}
+              <Label htmlFor='imageUrl'>Image</Label>
+              <Controller
+                name='image'
+                control={control}
+                render={({ field }) => (
+                  <ImageUpload
+                    id='image'
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    aria-invalid={!!errors.image}
+                  />
+                )}
               />
-              <FieldError message={errors.imageUrl?.message} />
+              <FieldError message={errors.image?.message} />
             </div>
 
             <div className='flex items-center justify-end gap-3 pt-2'>
