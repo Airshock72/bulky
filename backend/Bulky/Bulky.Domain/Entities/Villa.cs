@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Bulky.Domain.Entities;
 
@@ -14,6 +16,9 @@ public class Villa
     [Range(0, 10)]
     public int Occupancy { get; set; }
     public string? ImageUrl { get; set; }
+    [NotMapped]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Image { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
 }

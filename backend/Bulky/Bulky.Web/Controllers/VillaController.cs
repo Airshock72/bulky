@@ -9,7 +9,13 @@ namespace BulkyWeb.Controllers;
 public class VillaController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
-    public VillaController(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+    {
+        _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+    }
     
     [HttpGet]
     public IActionResult GetAll()
@@ -24,10 +30,21 @@ public class VillaController : ControllerBase
         var villas = _unitOfWork.Villa.GetListOptions();
         return Ok(villas);
     }
+    
+    [HttpGet("{villaId:int}")]
+    public IActionResult Get(int villaId)
+    {
+        Villa? villa = _unitOfWork.Villa.Get(villaId);
+        if (villa == null) return NotFound();
+        return Ok(villa);
+    }
 
     [HttpPost]
-    public IActionResult Create([FromBody]Villa obj)
+    public IActionResult Create([FromBody] Villa obj)
     {
+        if (!string.IsNullOrEmpty(obj.Image))
+            obj.ImageUrl = SaveBase64Image(obj.Image);
+
         obj.CreatedDate = DateTime.UtcNow;
         _unitOfWork.Villa.Add(obj);
         _unitOfWork.Save();
@@ -43,7 +60,6 @@ public class VillaController : ControllerBase
 
         villa.Name = updatedVilla.Name;
         villa.Description = updatedVilla.Description;
-        villa.ImageUrl = updatedVilla.ImageUrl;
         villa.Occupancy = updatedVilla.Occupancy;
         villa.Price = updatedVilla.Price;
         villa.Sqft = updatedVilla.Sqft;
@@ -63,5 +79,28 @@ public class VillaController : ControllerBase
         _unitOfWork.Villa.Remove(villa);
         _unitOfWork.Save();
         return Ok();
+    }
+
+    private string SaveBase64Image(string base64DataUrl)
+    {
+        string base64 = base64DataUrl;
+        string extension = ".jpg";
+
+        if (base64DataUrl.Contains(','))
+        {
+            var parts = base64DataUrl.Split(',', 2);
+            var header = parts[0];
+            base64 = parts[1];
+
+            if (header.Contains("png")) extension = ".png";
+            else if (header.Contains("gif")) extension = ".gif";
+            else if (header.Contains("webp")) extension = ".webp";
+        }
+
+        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VillaImage");
+        Directory.CreateDirectory(uploadsFolder);
+        string fileName = Guid.NewGuid() + extension;
+        System.IO.File.WriteAllBytes(Path.Combine(uploadsFolder, fileName), Convert.FromBase64String(base64));
+        return $"/Images/VillaImage/{fileName}";
     }
 }
