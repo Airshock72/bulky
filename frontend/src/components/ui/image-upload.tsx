@@ -90,7 +90,7 @@ const ImageUpload = ({ id, value, onChange, className, 'aria-invalid': ariaInval
                 type='button'
                 aria-label='View full image'
                 onClick={() => setIsLightboxOpen(true)}
-                className='rounded-md bg-white/90 p-2 text-gray-900 shadow transition-transform duration-150 hover:scale-105 hover:bg-white'
+                className='rounded-md bg-white/90 p-2 text-gray-900 shadow transition-transform duration-150 hover:scale-105 hover:bg-white cursor-pointer'
               >
                 <Eye className='h-4 w-4' />
               </button>
@@ -98,7 +98,7 @@ const ImageUpload = ({ id, value, onChange, className, 'aria-invalid': ariaInval
             <button
               type='button'
               onClick={() => inputRef.current?.click()}
-              className='rounded-md bg-white/90 px-4 py-1.5 text-sm font-medium text-gray-900 shadow transition-transform duration-150 hover:scale-105 hover:bg-white'
+              className='rounded-md bg-white/90 px-4 py-1.5 text-sm font-medium text-gray-900 shadow transition-transform duration-150 hover:scale-105 hover:bg-white cursor-pointer'
             >
               Change image
             </button>
@@ -107,7 +107,7 @@ const ImageUpload = ({ id, value, onChange, className, 'aria-invalid': ariaInval
             type='button'
             aria-label='Remove image'
             onClick={() => onChange?.('')}
-            className='absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground shadow-md transition-all duration-150 hover:scale-110 hover:shadow-lg'
+            className='absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground shadow-md transition-all duration-150 hover:scale-110 hover:shadow-lg cursor-pointer'
           >
             <X className='h-3.5 w-3.5' />
           </button>
@@ -172,7 +172,7 @@ const ImageUpload = ({ id, value, onChange, className, 'aria-invalid': ariaInval
             type='button'
             aria-label='Close'
             onClick={() => setIsLightboxOpen(false)}
-            className='absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25'
+            className='absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25 cursor-pointer'
           >
             <X className='h-5 w-5' />
           </button>

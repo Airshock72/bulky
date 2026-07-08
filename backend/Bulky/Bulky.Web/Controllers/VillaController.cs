@@ -65,6 +65,12 @@ public class VillaController : ControllerBase
         villa.Sqft = updatedVilla.Sqft;
         villa.UpdatedDate = DateTime.UtcNow;
 
+        DeleteImage(villa.ImageUrl);
+
+        villa.ImageUrl = string.IsNullOrEmpty(updatedVilla.Image)
+            ? null
+            : SaveBase64Image(updatedVilla.Image);
+
         _unitOfWork.Save();
         return Ok(villa);
     }
@@ -102,5 +108,14 @@ public class VillaController : ControllerBase
         string fileName = Guid.NewGuid() + extension;
         System.IO.File.WriteAllBytes(Path.Combine(uploadsFolder, fileName), Convert.FromBase64String(base64));
         return $"/Images/VillaImage/{fileName}";
+    }
+
+    private void DeleteImage(string? imageUrl)
+    {
+        if (string.IsNullOrEmpty(imageUrl)) return;
+
+        string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, imageUrl.TrimStart('/'));
+        if (System.IO.File.Exists(oldImagePath))
+            System.IO.File.Delete(oldImagePath);
     }
 }
