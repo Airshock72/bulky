@@ -21,4 +21,8 @@
       <ProjectReference Include="..\Bulky.Infrastructure\Bulky.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\images\VillaImage\" />
+    </ItemGroup>
+
 </Project>

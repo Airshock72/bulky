@@ -82,6 +82,7 @@ public class VillaController : ControllerBase
 
         if (villa == null) return NotFound();
 
+        DeleteImage(villa.ImageUrl);
         _unitOfWork.Villa.Remove(villa);
         _unitOfWork.Save();
         return Ok();
