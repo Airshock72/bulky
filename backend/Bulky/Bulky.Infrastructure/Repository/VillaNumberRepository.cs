@@ -14,9 +14,4 @@ public class VillaNumberRepository : Repository<VillaNumber>, IVillaNumberReposi
     {
         return _db.VillaNumbers.Include(v => v.Villa).ToList();
     }
-
-    public bool NumberExist(int number)
-    {
-        return _db.VillaNumbers.Any(vn => vn.Number == number);
-    }
 }

@@ -6,7 +6,8 @@ import BulkyWebLogo from '@/assets/images/BulkyWebLogo'
 
 const NAV_LINKS = [
   { label: 'Villas', to: ROUTES.VILLAS },
-  { label: 'Villa Numbers', to: ROUTES.VILLA_NUMBERS }
+  { label: 'Villa Numbers', to: ROUTES.VILLA_NUMBERS },
+  { label: 'Amenities', to: ROUTES.AMENITIES }
 ] as const
 
 const Header = () => (

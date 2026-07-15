@@ -79,19 +79,19 @@ public class ApplicationDbContext : DbContext
             {
                 Id = 1,
                 Name = "Swimming Pool",
-                VillaId = 1
+                VillaId = 13
             },
             new Amenity
             {
                 Id = 2,
                 Name = "Gym",
-                VillaId = 1
+                VillaId = 13
             },
             new Amenity
             {
                 Id = 3,
                 Name = "Spa",
-                VillaId = 1
+                VillaId = 13
             }
         );
     }

@@ -7,6 +7,8 @@ import VillasPage from '@/pages/VillasPage'
 import CreateAndEditVillaPage from '@/pages/CreateAndEditVillaPage'
 import VillaNumbersPage from '@/pages/VillaNumbersPage'
 import CreateAndEditVillaNumberPage from '@/pages/CreateAndEditVillaNumberPage'
+import AmenitiesPage from '@/pages/AmenitiesPage'
+import CreateAndEditAmenityPage from '@/pages/CreateAndEditAmenityPage'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
@@ -25,6 +27,9 @@ const App = () => {
             <Route path={ROUTES.VILLA_NUMBERS} element={<VillaNumbersPage />} />
             <Route path={ROUTES.VILLA_NUMBERS_CREATE} element={<CreateAndEditVillaNumberPage />} />
             <Route path={ROUTES.VILLA_NUMBERS_UPDATE} element={<CreateAndEditVillaNumberPage />} />
+            <Route path={ROUTES.AMENITIES} element={<AmenitiesPage />} />
+            <Route path={ROUTES.AMENITIES_CREATE} element={<CreateAndEditAmenityPage />} />
+            <Route path={ROUTES.AMENITIES_UPDATE} element={<CreateAndEditAmenityPage />} />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </div>
