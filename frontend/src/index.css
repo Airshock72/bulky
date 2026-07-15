@@ -28,6 +28,8 @@
   --animate-fade-in: fade-in 0.3s ease-out both;
   --animate-select-in: select-in 0.15s ease-out both;
   --animate-select-out: select-out 0.1s ease-in both;
+  --animate-dropdown-in: dropdown-in 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-dropdown-out: dropdown-out 0.12s ease-in both;
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -72,6 +74,28 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdown-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
   }
 }
 
@@ -152,16 +176,14 @@
 
   body {
     @apply text-foreground font-sans;
-    background: linear-gradient(135deg, hsl(210 40% 98.5%) 0%, hsl(218 25% 95.5%) 55%, hsl(215 30% 93%) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, hsl(210 40% 98.5%) 0%, hsl(218 25% 95.5%) 55%, hsl(215 30% 93%) 100%) fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   .dark body {
-    background: linear-gradient(135deg, hsl(222 47% 5.5%) 0%, hsl(220 38% 8%) 55%, hsl(215 42% 6.5%) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, hsl(222 47% 5.5%) 0%, hsl(220 38% 8%) 55%, hsl(215 42% 6.5%) 100%) fixed;
   }
 
   /* Consistent focus ring for all interactive elements */
