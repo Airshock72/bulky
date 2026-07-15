@@ -4,7 +4,7 @@ namespace Bulky.Application.Common.Interfaces;
 
 public interface IRepository<T> where T: class
 {
-    IEnumerable<T> GetList();
+    IEnumerable<T> GetList(params Expression<Func<T, object>>[] includes);
     T? Get(Expression<Func<T, bool>> filter);
     void Add(T entity);
     bool Any(Expression<Func<T, bool>> filter);

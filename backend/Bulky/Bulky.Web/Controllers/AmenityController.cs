@@ -15,7 +15,7 @@ public class AmenityController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        IEnumerable<Amenity> amenities = _unitOfWork.Amenities.GetAllWithVilla();
+        IEnumerable<Amenity> amenities = _unitOfWork.Amenities.GetList(v => v.Villa);
         return Ok(amenities);
     }
 

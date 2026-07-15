@@ -18,9 +18,4 @@ public class VillaRepository : Repository<Villa>, IVillaRepository
     {
         return _db.Villas.FirstOrDefault(v => v.Id == id);
     }
-
-    public void Save()
-    {
-        _db.SaveChanges();
-    }
 }

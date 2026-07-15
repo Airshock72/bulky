@@ -29,9 +29,14 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet.Remove(entity);
     }
 
-    public IEnumerable<T> GetList()
+    public IEnumerable<T> GetList(params Expression<Func<T, object>>[] includes)
     {
-        return _dbSet.ToList();
+        IQueryable<T> query = _dbSet;
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+        return query.ToList();
     }
 
     public T? Get(Expression<Func<T, bool>> filter)

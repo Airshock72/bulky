@@ -14,7 +14,7 @@ public class VillaNumberController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        IEnumerable<VillaNumber> villaNumbers = _unitOfWork.VillaNumbers.GetAllWithVilla();
+        IEnumerable<VillaNumber> villaNumbers = _unitOfWork.VillaNumbers.GetList(v => v.Villa);
         return Ok(villaNumbers);
     }
 
