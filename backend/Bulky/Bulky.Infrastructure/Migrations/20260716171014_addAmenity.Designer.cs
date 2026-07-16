@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260715124432_addAmenity")]
+    [Migration("20260716171014_addAmenity")]
     partial class addAmenity
     {
         /// <inheritdoc />
@@ -48,26 +48,6 @@ namespace Bulky.Infrastructure.Migrations
                     b.HasIndex("VillaId");
 
                     b.ToTable("Amenities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Swimming Pool",
-                            VillaId = 13
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Gym",
-                            VillaId = 13
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Spa",
-                            VillaId = 13
-                        });
                 });
 
             modelBuilder.Entity("Bulky.Domain.Entities.Villa", b =>

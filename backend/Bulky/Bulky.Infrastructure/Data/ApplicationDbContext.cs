@@ -74,25 +74,5 @@ public class ApplicationDbContext : DbContext
             }
         );
 
-        modelBuilder.Entity<Amenity>().HasData(
-            new Amenity
-            {
-                Id = 1,
-                Name = "Swimming Pool",
-                VillaId = 13
-            },
-            new Amenity
-            {
-                Id = 2,
-                Name = "Gym",
-                VillaId = 13
-            },
-            new Amenity
-            {
-                Id = 3,
-                Name = "Spa",
-                VillaId = 13
-            }
-        );
     }
 }

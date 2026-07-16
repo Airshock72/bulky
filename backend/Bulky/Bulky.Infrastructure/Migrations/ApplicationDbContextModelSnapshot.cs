@@ -45,26 +45,6 @@ namespace Bulky.Infrastructure.Migrations
                     b.HasIndex("VillaId");
 
                     b.ToTable("Amenities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Swimming Pool",
-                            VillaId = 13
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Gym",
-                            VillaId = 13
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Spa",
-                            VillaId = 13
-                        });
                 });
 
             modelBuilder.Entity("Bulky.Domain.Entities.Villa", b =>

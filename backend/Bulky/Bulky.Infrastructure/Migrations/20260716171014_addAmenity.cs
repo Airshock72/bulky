@@ -2,8 +2,6 @@
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Bulky.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -31,16 +29,6 @@ namespace Bulky.Infrastructure.Migrations
                         principalTable: "Villas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Amenities",
-                columns: new[] { "Id", "Description", "Name", "VillaId" },
-                values: new object[,]
-                {
-                    { 1, null, "Swimming Pool", 13 },
-                    { 2, null, "Gym", 13 },
-                    { 3, null, "Spa", 13 }
                 });
 
             migrationBuilder.CreateIndex(
