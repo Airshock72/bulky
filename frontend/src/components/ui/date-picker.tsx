@@ -13,7 +13,7 @@ interface DatePickerProps {
 const WEEK_DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ]
 
 const DatePicker = ({ value, onChange, minDate, placeholder = 'Select date', className }: DatePickerProps) => {
@@ -97,7 +97,7 @@ const DatePicker = ({ value, onChange, minDate, placeholder = 'Select date', cla
           'transition-all duration-200 cursor-pointer',
           'hover:border-ring/50 hover:shadow',
           'focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          !displayValue && 'text-muted-foreground',
+          !displayValue && 'text-muted-foreground'
         )}
       >
         <CalendarDays className='h-4 w-4 shrink-0 text-muted-foreground' />
@@ -152,7 +152,7 @@ const DatePicker = ({ value, onChange, minDate, placeholder = 'Select date', cla
                     selected && 'bg-emerald-600 text-white font-semibold hover:bg-emerald-700 cursor-pointer',
                     !selected && today && 'border border-emerald-500 text-emerald-600 dark:text-emerald-400 font-semibold cursor-pointer',
                     !selected && !today && !disabled && 'hover:bg-accent text-foreground cursor-pointer',
-                    disabled && 'text-muted-foreground/35 cursor-not-allowed',
+                    disabled && 'text-muted-foreground/35 cursor-not-allowed'
                   )}
                 >
                   {day}
