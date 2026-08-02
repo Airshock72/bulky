@@ -1,5 +1,5 @@
-﻿using Bulky.Application.Common.Interfaces;
-using Bulky.Domain.Entities;
+using Bulky.Application.DTOs.Amenity;
+using Bulky.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
@@ -8,52 +8,28 @@ namespace BulkyWeb.Controllers;
 [Route("api/[controller]")]
 public class AmenityController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAmenityService _amenityService;
 
-    public AmenityController(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
+    public AmenityController(IAmenityService amenityService) => _amenityService = amenityService;
 
     [HttpGet]
-    public IActionResult GetAll()
-    {
-        IEnumerable<Amenity> amenities = _unitOfWork.Amenities.GetList(v => v.Villa);
-        return Ok(amenities);
-    }
+    public IActionResult GetAll() => Ok(_amenityService.GetAll());
 
     [HttpPost]
-    public IActionResult Create([FromBody] Amenity obj)
+    public IActionResult Create([FromBody] CreateAmenityRequest request)
     {
-        bool amenityExist = _unitOfWork.Amenities.Any(a => a.Name == obj.Name);
-        
-        if (amenityExist) return BadRequest($"Amenity {obj.Name} already exists!");
-        
-        _unitOfWork.Amenities.Add(obj);
-        _unitOfWork.Save();
-        return Ok(obj.Id);
+        try { return Ok(_amenityService.Create(request)); }
+        catch (InvalidOperationException ex) { return BadRequest(ex.Message); }
     }
 
-    [HttpPut("{amenityId:int}")]
-    public IActionResult Update(int amenityId, [FromBody] Amenity updatedAmenity)
+    [HttpPut("{id:int}")]
+    public IActionResult Update(int id, [FromBody] UpdateAmenityRequest request)
     {
-        Amenity? amenity = _unitOfWork.Amenities.Get(a => a.Id == amenityId);
-        if (amenity == null) return NotFound();
-
-        amenity.Name = updatedAmenity.Name;
-        amenity.VillaId = updatedAmenity.VillaId;
-        amenity.Description = updatedAmenity.Description;
-        
-        _unitOfWork.Save();
-        return Ok(amenity);
+        var result = _amenityService.Update(id, request);
+        return result is null ? NotFound() : Ok(result);
     }
 
-    [HttpDelete("{amenityId:int}")]
-    public IActionResult Delete(int amenityId)
-    {
-        Amenity? amenity = _unitOfWork.Amenities.Get(a => a.Id == amenityId);
-
-        if (amenity == null) return NotFound();
-        
-        _unitOfWork.Amenities.Remove(amenity);
-        _unitOfWork.Save();
-        return Ok();
-    }
+    [HttpDelete("{id:int}")]
+    public IActionResult Delete(int id) =>
+        _amenityService.Delete(id) ? Ok() : NotFound();
 }

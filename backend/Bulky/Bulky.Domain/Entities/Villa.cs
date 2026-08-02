@@ -21,4 +21,5 @@ public class Villa
     public string? Image { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
+    public IEnumerable<Amenity> Amenities { get; set; } =  new List<Amenity>();
 }

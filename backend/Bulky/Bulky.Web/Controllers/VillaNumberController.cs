@@ -1,5 +1,5 @@
-using Bulky.Application.Common.Interfaces;
-using Bulky.Domain.Entities;
+using Bulky.Application.DTOs.VillaNumber;
+using Bulky.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
@@ -8,50 +8,29 @@ namespace BulkyWeb.Controllers;
 [Route("api/[controller]")]
 public class VillaNumberController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
-    public VillaNumberController(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
+    private readonly IVillaNumberService _villaNumberService;
+
+    public VillaNumberController(IVillaNumberService villaNumberService) =>
+        _villaNumberService = villaNumberService;
 
     [HttpGet]
-    public IActionResult GetAll()
-    {
-        IEnumerable<VillaNumber> villaNumbers = _unitOfWork.VillaNumbers.GetList(v => v.Villa);
-        return Ok(villaNumbers);
-    }
+    public IActionResult GetAll() => Ok(_villaNumberService.GetAll());
 
     [HttpPost]
-    public IActionResult Create([FromBody] VillaNumber obj)
+    public IActionResult Create([FromBody] CreateVillaNumberRequest request)
     {
-        bool villaNumberExist = _unitOfWork.VillaNumbers.Any(v => v.Number == obj.Number);
-        
-        if (villaNumberExist) return BadRequest($"Villa Number {obj.Number} already exists!");
-        
-        _unitOfWork.VillaNumbers.Add(obj);
-        _unitOfWork.Save();
-        return Ok(obj.Id);
+        try { return Ok(_villaNumberService.Create(request)); }
+        catch (InvalidOperationException ex) { return BadRequest(ex.Message); }
     }
 
-    [HttpPut("{villaNumberId:int}")]
-    public IActionResult Update(int villaNumberId, [FromBody] VillaNumber updatedVillaNumber)
+    [HttpPut("{id:int}")]
+    public IActionResult Update(int id, [FromBody] UpdateVillaNumberRequest request)
     {
-        VillaNumber? villaNumber = _unitOfWork.VillaNumbers.Get(v => v.Id == villaNumberId);
-        if (villaNumber == null) return NotFound();
-        
-        villaNumber.SpecialDetails = updatedVillaNumber.SpecialDetails;
-        villaNumber.VillaId = updatedVillaNumber.VillaId;
-
-        _unitOfWork.Save();
-        return Ok(villaNumber);
+        var result = _villaNumberService.Update(id, request);
+        return result is null ? NotFound() : Ok(result);
     }
 
-    [HttpDelete("{villaNumberId:int}")]
-    public IActionResult Delete(int villaNumberId)
-    {
-        VillaNumber? villaNumber = _unitOfWork.VillaNumbers.Get(v => v.Id == villaNumberId);
-
-        if (villaNumber == null) return NotFound();
-
-        _unitOfWork.VillaNumbers.Remove(villaNumber);
-        _unitOfWork.Save();
-        return Ok();
-    }
+    [HttpDelete("{id:int}")]
+    public IActionResult Delete(int id) =>
+        _villaNumberService.Delete(id) ? Ok() : NotFound();
 }
