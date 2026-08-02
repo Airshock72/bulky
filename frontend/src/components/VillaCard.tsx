@@ -1,78 +1,89 @@
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toAbsoluteUrl } from '@/api/client'
 import type { Villa } from '@/api/villas'
+import VillaDetailsModal from '@/components/VillaDetailsModal'
 
 interface VillaCardProps {
   villa: Villa
 }
 
 const VillaCard = ({ villa }: VillaCardProps) => {
+  const [modalOpen, setModalOpen] = useState(false)
   const imageUrl = toAbsoluteUrl(villa.imageUrl)
 
   return (
-    <div className='group flex min-h-64 overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl'>
-      <div className='relative w-110 shrink-0 transition-[width] duration-500 ease-out'>
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={villa.name}
-            className='h-full w-full object-cover transition-transform duration-500'
-          />
-        ) : (
-          <div className='flex h-full w-full items-center justify-center bg-white'>
-            <span className='text-sm font-medium text-gray-400'>No photo</span>
-          </div>
-        )}
-        <div className='absolute top-0 left-0 h-full w-full bg-linear-to-t from-black/60 via-black/10 to-transparent' />
-        <div className='absolute bottom-3 left-3 right-3'>
-          <Button variant='emerald' size='sm' className='w-full rounded-lg'>
+    <>
+      <div className='group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl md:flex-row md:min-h-64'>
+        <div className='relative h-36 w-full shrink-0 md:h-auto md:w-56 lg:w-64 xl:w-72'>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={villa.name}
+              className='h-full w-full object-cover transition-transform duration-500'
+            />
+          ) : (
+            <div className='flex h-full w-full items-center justify-center bg-white'>
+              <span className='text-sm font-medium text-gray-400'>No photo</span>
+            </div>
+          )}
+          <div className='absolute top-0 left-0 h-full w-full bg-linear-to-t from-black/60 via-black/10 to-transparent' />
+          <div className='absolute bottom-3 left-3 right-3'>
+            <Button variant='emerald' size='sm' className='w-full rounded-lg'>
             Book
-          </Button>
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <div className='flex flex-1 flex-col p-5'>
-        <div className='mb-2.5 flex items-start justify-between gap-4'>
-          <h3 className='text-xl font-bold leading-tight tracking-tight text-card-foreground'>
-            {villa.name}
-          </h3>
-          <Button variant='emerald' size='sm' className='shrink-0 rounded-lg'>
+        <div className='flex flex-1 flex-col p-5'>
+          <div className='mb-2.5 flex items-start justify-between gap-4'>
+            <h3 className='text-xl font-bold leading-tight tracking-tight text-card-foreground'>
+              {villa.name}
+            </h3>
+            <Button variant='emerald' size='sm' className='shrink-0 rounded-lg' onClick={() => setModalOpen(true)}>
             Details
-          </Button>
-        </div>
-
-        <p className='mb-auto line-clamp-3 text-sm text-muted-foreground'>
-          {villa.description}
-        </p>
-
-        <div className='mt-4 flex items-end justify-between border-t border-border pt-4'>
-          <div className='space-y-0.5'>
-            <p className='text-sm'>
-              <span className='text-muted-foreground'>Max Occupancy: </span>
-              <span className='font-semibold'>{villa.occupancy}</span>
-            </p>
-            <p className='text-sm'>
-              <span className='text-muted-foreground'>Villa Size: </span>
-              <span className='font-semibold'>{villa.sqft.toLocaleString()} sqft</span>
-            </p>
+            </Button>
           </div>
 
-          <div className='text-right'>
-            <p className='mb-0.5 text-xs text-muted-foreground'>per night</p>
-            <p className='text-2xl font-bold leading-none tracking-tight'>
-              <span className='text-sm font-medium text-muted-foreground'>USD </span>
+          <p className='mb-auto line-clamp-3 text-sm text-muted-foreground'>
+            {villa.description}
+          </p>
+
+          <div className='mt-4 flex items-end justify-between border-t border-border pt-4'>
+            <div className='space-y-0.5'>
+              <p className='text-sm'>
+                <span className='text-muted-foreground'>Max Occupancy: </span>
+                <span className='font-semibold'>{villa.occupancy}</span>
+              </p>
+              <p className='text-sm'>
+                <span className='text-muted-foreground'>Villa Size: </span>
+                <span className='font-semibold'>{villa.sqft.toLocaleString()} sqft</span>
+              </p>
+            </div>
+
+            <div className='text-right'>
+              <p className='mb-0.5 text-xs text-muted-foreground'>per night</p>
+              <p className='text-2xl font-bold leading-none tracking-tight'>
+                <span className='text-sm font-medium text-muted-foreground'>USD </span>
               ${villa.price.toLocaleString()}
-            </p>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <VillaDetailsModal
+        villaId={villa.id}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
+    </>
   )
 }
 
 export const VillaCardSkeleton = () => (
-  <div className='flex min-h-64 overflow-hidden rounded-2xl border border-border bg-card animate-pulse'>
-    <div className='w-110 shrink-0 bg-muted' />
+  <div className='flex flex-col overflow-hidden rounded-2xl border border-border bg-card animate-pulse md:flex-row md:min-h-64'>
+    <div className='h-36 w-full shrink-0 bg-muted md:h-auto md:w-56 lg:w-64 xl:w-72' />
     <div className='flex flex-1 flex-col p-5 gap-3'>
       <div className='flex justify-between gap-4'>
         <div className='h-6 w-40 rounded-lg bg-muted' />

@@ -1,3 +1,9 @@
+export interface VillaAmenity {
+  id: number
+  name: string
+  description: string | null
+}
+
 export interface Villa {
   id: number
   name: string
@@ -8,6 +14,7 @@ export interface Villa {
   imageUrl: string
   createdDate: string
   updatedDate: string
+  amenities?: VillaAmenity[]
 }
 
 export interface VillaListItem {
