@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Building2, ChevronDown, Hash, LogIn, Sparkles } from 'lucide-react'
 import { ROUTES } from '@/routes/routes'
 import { cn } from '@/lib/utils'
-import { getAuthToken } from '@/lib/auth'
+import { isAuthenticated } from '@/lib/auth'
 import ThemeToggle from '@/components/ThemeToggle'
 import { Button } from '@/components/ui/button'
 import BulkyWebLogo from '@/assets/images/BulkyWebLogo'
@@ -30,7 +30,7 @@ const Header = () => {
   const isContentManagementActive = CONTENT_MANAGEMENT_LINKS.some(l => location.pathname.startsWith(l.to))
 
   const handleSignInClick = () => {
-    if (!getAuthToken()) {
+    if (!isAuthenticated()) {
       navigate(ROUTES.LOGIN)
     }
   }

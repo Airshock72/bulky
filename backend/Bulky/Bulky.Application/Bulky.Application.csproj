@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Bulky.Domain\Bulky.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.10" />
+    </ItemGroup>
+
 </Project>

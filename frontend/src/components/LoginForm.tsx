@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeOff, LogIn } from 'lucide-react'
+import { toast } from 'sonner'
 import { ROUTES } from '@/routes/routes'
 import { loginSchema, type LoginFormData } from '@/schemas/login'
+import { loginUser } from '@/api/auth'
+import { setAuthTokens } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -25,8 +28,14 @@ const LoginForm = () => {
     defaultValues: { email: '', password: '', rememberMe: false }
   })
 
-  const onSubmit = (data: LoginFormData) => {
-    console.info(data)
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const tokens = await loginUser({ email: data.email, password: data.password })
+      setAuthTokens(tokens.accessToken, tokens.refreshToken)
+      navigate(ROUTES.HOME)
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'An unexpected error occurred')
+    }
   }
 
   return (
