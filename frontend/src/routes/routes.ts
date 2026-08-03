@@ -1,5 +1,7 @@
 export const ROUTES = {
   HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
   VILLAS: '/villas',
   VILLAS_CREATE: '/villas/create',
   VILLAS_UPDATE: '/villas/update/:id',

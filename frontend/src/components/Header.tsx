@@ -1,8 +1,10 @@
-import { Link, useLocation } from 'react-router-dom'
-import { Building2, ChevronDown, Hash, Sparkles } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Building2, ChevronDown, Hash, LogIn, Sparkles } from 'lucide-react'
 import { ROUTES } from '@/routes/routes'
 import { cn } from '@/lib/utils'
+import { getAuthToken } from '@/lib/auth'
 import ThemeToggle from '@/components/ThemeToggle'
+import { Button } from '@/components/ui/button'
 import BulkyWebLogo from '@/assets/images/BulkyWebLogo'
 import {
   DropdownMenu,
@@ -24,7 +26,14 @@ const CONTENT_MANAGEMENT_LINKS = [...VILLA_LINKS, AMENITY_LINK]
 
 const Header = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const isContentManagementActive = CONTENT_MANAGEMENT_LINKS.some(l => location.pathname.startsWith(l.to))
+
+  const handleSignInClick = () => {
+    if (!getAuthToken()) {
+      navigate(ROUTES.LOGIN)
+    }
+  }
 
   return (
     <header className='sticky top-0 z-50 w-full border-b border-slate-200/70 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md supports-backdrop-filter:bg-white/65 dark:supports-backdrop-filter:bg-slate-950/65'>
@@ -81,8 +90,12 @@ const Header = () => {
           </DropdownMenu>
         </nav>
 
-        <div className='ml-auto'>
+        <div className='ml-auto flex items-center gap-3'>
           <ThemeToggle />
+          <Button variant='emerald' size='sm' onClick={handleSignInClick}>
+            <LogIn className='h-4 w-4' />
+            Sign In
+          </Button>
         </div>
       </div>
     </header>
